@@ -41,7 +41,7 @@
   import {getRecommend, getDiscList} from 'api/recommend'
   import {playlistMixin} from 'common/js/mixin'
   import {ERR_OK} from 'api/config'
-  // import {mapMutations} from 'vuex'
+  import {mapMutations} from 'vuex'
 
   export default {
     mixins: [playlistMixin],
@@ -67,12 +67,12 @@
           this.$refs.scroll.refresh()
         }
       },
-    //   selectItem(item) {
-    //     this.$router.push({
-    //       path: `/recommend/${item.dissid}`
-    //     })
-    //     this.setDisc(item)
-    //   },
+      selectItem(item) {
+        this.$router.push({
+          path: `/recommend/${item.dissid}`
+        })
+        this.setDisc(item)
+      },
       _getRecommend() {
         getRecommend().then((res) => {
           if (res.code === ERR_OK) {
@@ -87,9 +87,9 @@
           }
         })
       },
-      // ...mapMutations({
-      //   setDisc: 'SET_DISC'
-      // })
+      ...mapMutations({
+        setDisc: 'SET_DISC'
+      })
     },
     components: {
       Slider,
