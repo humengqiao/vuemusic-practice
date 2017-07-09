@@ -22,7 +22,7 @@ export const selectPlay = function({commit, state},{list, index}) {
 	commit(types.SET_PLAYING_STATE, true)
 }
 
-export const randomPlay = function({commit, state},{list}) {
+export const randomPlay = function({commit, state}, {list}) {
 	commit(types.SET_PLAY_MODE, playMode.random)
 	commit(types.SET_SEQUENCE_LIST, list)
 	let randomList = shuffle(list)
@@ -31,3 +31,37 @@ export const randomPlay = function({commit, state},{list}) {
 	commit(types.SET_FULL_SCREEN, true)
 	commit(types.SET_PLAYING_STATE, true)
 }
+
+export const insertSong = function({commit, state}, song) {
+	let playList = state.playList.slice()
+	let sequenceList = state.sequenceList.slice()
+	let currentIndex = state.currentIndex
+	//记录当前歌曲
+	let currentSong = playList[currentIndex]
+	let fpIndex = findIndex(playList, song)
+	currentIndex++
+	playList.splice(currentIndex, 0 , song)
+	if(fpIndex > -1) {
+		if(currentIndex > fpIndex) {
+			playList.splice(fpIndex, 1)
+			currentIndex--
+		}else {
+			playList.splice(fpIndex+1, 1)
+		}
+	}
+	let currentSIndex = findIndex(sequenceList, currentSong) + 1
+	let fsIndex = find(sequenceList, song)
+	sequenceList.splice(currentSIndex, 0, song)
+	if(fsIndex > -1) {
+		if(currentSIndex > fsIndex) {
+			sequenceList.splice(fsIndex, 1)
+		}else {
+			sequenceList.splice(fsIndex + 1, 1)
+		}
+	}
+	commit(types.SET_PLAYLIST, playList)
+	commit(types.SET_SEQUENCE_LIST, sequenceList)
+	commit(types.SET_CURRENT_INDEX, currentIndex)
+	commit(types.SET_FULL_SCREEN, true)
+	commit(types.SET_PLAYING_STATE, true)
+} 
