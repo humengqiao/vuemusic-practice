@@ -47,7 +47,8 @@
         pullup: true,
         beforeScroll: true,
         hasMore: true,
-        result: []
+        result: [],
+        beforeScroll: true
       }
     },
     methods: {

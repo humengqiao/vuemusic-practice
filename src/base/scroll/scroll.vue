@@ -28,6 +28,14 @@
 			pullup: {
 				type: Boolean,
 				default: false
+			},
+			beforeScroll: {
+				type: Boolean,
+				default: false
+			},
+			refreshDelay: {
+				type: Number,
+				default: 20
 			}
 		},
 		mounted() {
@@ -59,6 +67,12 @@
 		        		}
 		        	})
 		        }
+
+		        if(this.beforeScroll) {
+		        	this.scroll.on('beforeScrollStart', () => {
+		        		this.$emit('beforeScroll')
+		        	})
+		        }
 			},
 			enable() {
 				this.scroll && this.scroll.enable()
@@ -78,9 +92,9 @@
 		},
 		watch: {
 			data() {
-				this.$nextTick(() => {
+				setTimeout(() => {
 					this.refresh()
-				});
+				}, this.refreshDelay)				
 			}
 		}
 	}
